@@ -8,7 +8,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title></title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width">
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
@@ -16,26 +16,86 @@
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
-    <body class="page-1">
+    <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-		<a href="#" class="clicker"></a>
-		<a href="#" class="clicker clicker--right"></a>
+		<a href="#" class="clicker js-pager js-pager-prev"></a>
+		<a href="#" class="clicker clicker--right js-pager js-pager-next"></a>
 
         <!-- Add your site or application content here -->
         <div class="image-holder">
-			<div class="image-holder__image">
+			<div class="image-holder__image js-image">
 			</div>
 		</div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
+		<script>
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+			(function($, w, undefined) {
+
+				var _images = [
+					'img/artwork/letter.jpg',
+					'img/artwork/separation.jpg',
+					'img/artwork/interiorisation.jpg',
+					'img/artwork/simulation.jpg',
+					'img/artwork/reparation.jpg',
+				];
+
+				var images = [];
+
+				for (var i in _images) {
+					var img = new Image();
+					img.src = _images[i];
+					images[i] = img;
+				}
+
+				var current = 0;
+
+				var $imgHolder = $('.js-image');
+
+				$(document.body).on('click', '.js-pager', function(ev) {
+
+					changeImage($(this).is('.js-pager-prev'));
+
+					ev.preventDefault();
+				}).on('keydown', function(ev) {
+					if (ev.which == 39) {
+						changeImage(false);
+						ev.preventDefault();
+					}
+					else if (ev.which == 37) {
+						changeImage(true);
+						ev.preventDefault();
+					}
+				});
+
+				function changeImage(prev) {
+
+					var reset = 0;
+
+					if (prev) {
+						current += 1;
+					}
+					else {
+						current -= 1;
+						reset = images.length - 1;
+					}
+
+
+					if (typeof images[current] == "undefined") {
+						current = reset;
+					}
+
+					$imgHolder.css('background-image', 'url(' + images[current].src + ')');
+				}
+
+			})(jQuery, window);
+		</script>
+
+        <!-- Google Analytics: change UA-5532417-43 to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
             function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
