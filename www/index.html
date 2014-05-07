@@ -45,16 +45,32 @@
 				];
 
 				var images = [];
+				var currentImg;
+				var current = 0;
+				var $w = $(w);
+				var $imgHolder = $('.js-image');
+				var width;
+				var heigth;
+
+				$w.on('resize', function(){
+					width = $w.width();
+					height = $w.height();
+					fixSizing()
+				});
 
 				for (var i in _images) {
 					var img = new Image();
+					if (i == 0) {
+						currentImg = img;
+						img.onload = function() {
+							$w.trigger('resize');
+						};
+					}
 					img.src = _images[i];
 					images[i] = img;
 				}
 
-				var current = 0;
 
-				var $imgHolder = $('.js-image');
 
 				$(document.body).on('click', '.js-pager', function(ev) {
 
@@ -89,7 +105,21 @@
 						current = reset;
 					}
 
-					$imgHolder.css('background-image', 'url(' + images[current].src + ')');
+					var img = images[current];
+					currentImg = img;
+
+					fixSizing();
+
+					$imgHolder.css('background-image', 'url(' + img.src + ')');
+				}
+
+				function fixSizing() {
+					if (currentImg.width > width || currentImg.height > height) {
+						$imgHolder.addClass('flex');
+					}
+					else {
+						$imgHolder.removeClass('flex');
+					}
 				}
 
 			})(jQuery, window);
