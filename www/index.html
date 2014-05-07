@@ -58,25 +58,25 @@
 
 				$(document.body).on('click', '.js-pager', function(ev) {
 
-					changeImage($(this).is('.js-pager-prev'));
+					changeImage($(this).is('.js-pager-next'));
 
 					ev.preventDefault();
 				}).on('keydown', function(ev) {
 					if (ev.which == 39) {
-						changeImage(false);
+						changeImage(true);
 						ev.preventDefault();
 					}
 					else if (ev.which == 37) {
-						changeImage(true);
+						changeImage(false);
 						ev.preventDefault();
 					}
 				});
 
-				function changeImage(prev) {
+				function changeImage(next) {
 
 					var reset = 0;
 
-					if (prev) {
+					if (next) {
 						current += 1;
 					}
 					else {
